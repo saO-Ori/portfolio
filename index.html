@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description"
+    content="SAORI PORTFOLIO は、HTML・CSS を中心に、構成を整理しながら実装を行う Webコーダーのポートフォリオです。制作スタンス、スキル、個人制作の取り組みを掲載しています。">
+
+  <link rel="canonical" href="https://kisaragi-base.com/portfolio/">
+  <title>SAORI PORTFOLIO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;900&display=swap" rel="stylesheet">
+  <!-- SLAVIS: レイアウト/トークンは外部CSSで一元管理 -->
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- ========== 背景（固定） [Asset] ========== -->
+  <div class="background-shapes" aria-hidden="true">
+    <!-- 大：中央固定。中/小はJSで複製＆散布 -->
+    <img class="--svg-shape --svg-shape_lg" src="images/large.svg" alt="" />
+    <img class="--svg-shape --svg-shape_md js-shapeTemplate" src="images/medium.svg" alt="" hidden />
+    <img class="--svg-shape --svg-shape_sm js-shapeTemplate" src="images/small.svg" alt="" hidden />
+  </div>
+
+  <!-- ========== ファーストビュー [Section] ========== -->
+  <section class="fv-hero" id="fv">
+    <div class="fv-hero-inner">
+      <h1 class="fv-hero-title">SAORI<br>PORTFOLIO</h1>
+      <p class="fv-hero-sub">
+        HTML / CSS を中心に、<br>
+        構成を整理しながら実装を行う Webコーダーのポートフォリオです
+      </p>
+    </div>
+    <!-- ▼ FV専用：スクロールダウンインジケーター -->
+    <button class="scroll-indicator --icon-scroll js-scrollDown" type="button" aria-label="下にスクロール">
+      <span class="scroll-indicator_label">SCROLL</span>
+      <span class="scroll-indicator_icon" aria-hidden="true"></span>
+    </button>
+  </section>
+
+  <!-- ========== 横スクロール・ショーケース [Layout + JSフック] ========== -->
+  <main class="showcase l-hscroll js-hscrollRoot" id="hscrollRoot">
+    <div class="showcase-viewport">
+      <div class="showcase-content js-hscrollContent" id="hscrollContent">
+
+        <!-- ABOUT -->
+        <section class="showcase-panel" data-section="about" id="about">
+          <!-- 左：タイトル＋テキスト -->
+          <div class="showcase-left">
+            <h2 class="showcase-title">ABOUT</h2>
+            <p class="showcase-text">&nbsp;制作スタンス</p>
+          </div>
+          <!-- 右：右揃えエリア -->
+          <div class="showcase-right">
+            <p class="showcase-role">構成を整理しながら実装する Webコーダー</p>
+
+            <p class="showcase-rightText">
+              制作では、ページの目的や情報の流れを整理することを意識しています。<br>
+              「このページで何を伝えたいのか」「どこで迷わせないか」などを考えながら構成を組み立て、意図が曖昧な部分についても整理して実装できる形に落とし込むことを心掛けています。
+            </p>
+
+            <p class="showcase-rightText">
+              派手なものよりも、静かで落ち着いたものに惹かれます。<br>
+              筆ペンの書き心地や、イラストや絵画に触れる時間に安らぎを感じ、表現の仕方や空気感といった、それぞれが持つ違いに目を向ける感覚は、制作にも影響しています。
+            </p>
+          </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="showcase-panel" data-section="skills" id="skills">
+          <div class="showcase-left">
+            <h2 class="showcase-title">SKILLS</h2>
+            <p class="showcase-text">&nbsp;現在できること</p>
+          </div>
+          <div class="showcase-right">
+
+            <p class="showcase-rightText">
+              <span class="skills-title">HTML / CSS（マークアップ・レイアウト）</span><br>
+              見出し構造や役割を意識したマークアップ、Flexbox / Grid を用いたレイアウト実装に取り組んでいます。<br>
+              画面サイズに合わせた調整や、読みやすさを崩さない整え方を意識しています。
+            </p>
+
+            <p class="showcase-rightText">
+              <span class="skills-title">JavaScript（UI 制御）</span><br>
+              表示切替やスクロールに応じたクラス操作など、UI に関わる基本的な処理を中心に実装しています。<br>
+              既存のコードやサンプルを確認しながら、処理内容を理解した上で調整・組み込みを行っています。
+            </p>
+
+            <p class="showcase-rightText">
+              <span class="skills-title">既存コードの読み取り・調整</span><br>
+              既存の構造や役割を把握することを意識し、コードを読みながら調整・修正を行う形で進めています。<br>
+              可読性と見通しを意識し、あとから見返しやすい整理も心掛けています。
+            </p>
+
+            <p class="showcase-rightText">
+              <span class="skills-title">素材の調整・シンプルなデザイン加工</span><br>
+              既存素材をページに馴染むように整え、過度な装飾ではなく落ち着いた使いやすさを意識しています。
+            </p>
+
+          </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="showcase-panel" id="projects" data-section="projects">
+          <div class="showcase-left">
+            <h2 class="showcase-title">PROJECTS</h2>
+            <p class="showcase-text">&nbsp;個人制作・学習の取り組み</p>
+          </div>
+
+          <div class="showcase-right">
+
+            <p class="showcase-rightText">
+              実務案件ではなく、学習・個人制作として取り組んだものを掲載しています。
+            </p>
+
+            <!-- Projects Carousel -->
+            <div class="projects-carousel l-carousel js-carousel" aria-label="Projects slider">
+
+              <!-- prev -->
+              <button class="projects-carouselBtn projects-carouselBtn_prev js-carouselPrev" type="button"
+                aria-label="前へ">
+                <img src="images/left-solid.svg" alt="" aria-hidden="true">
+              </button>
+
+              <!-- viewport -->
+              <div class="projects-carouselViewport js-carouselViewport" tabindex="0" aria-label="左右キーで移動できます">
+
+                <div class="projects-carouselTrack js-carouselTrack">
+
+                  <!-- Project : Timer -->
+                  <article class="projects-card js-carouselItem">
+                    <img class="--img-projectsTimer" src="images/timer.jpg" alt="Timer プロジェクトのサムネイル">
+
+                    <div class="projects-cardMeta">
+                      <p class="projects-cardCaption">
+                        Timer<br>
+                        状態管理とUI操作の基礎を実装
+                      </p>
+
+                      <div class="projects-cardLinks">
+                        <a class="projects-cardLinkBtn" href="https://github.com/saO-Ori/simple-timer_neumorphism-button/blob/main/README.md" target="_blank" rel="noopener">README</a>
+                        <a class="projects-cardLinkBtn" href="https://sao-ori.github.io/simple-timer_neumorphism-button/" target="_blank"
+                          rel="noopener">DEMO</a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Project : Color System Converter -->
+                  <article class="projects-card js-carouselItem">
+                    <img class="--img-projectsColor" src="images/color.jpg" alt="Color System Converter のサムネイル">
+
+                    <div class="projects-cardMeta">
+                      <p class="projects-cardCaption">
+                        Color System Converter<br>
+                        色変換ロジックと入力ルール整理
+                      </p>
+
+                      <div class="projects-cardLinks">
+                        <a class="projects-cardLinkBtn" href="https://github.com/saO-Ori/color-system-converter/blob/main/README.md" target="_blank" rel="noopener">README</a>
+                        <a class="projects-cardLinkBtn" href="https://sao-ori.github.io/color-system-converter/" target="_blank"
+                          rel="noopener">DEMO</a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <!-- Project : Layout Visualizer -->
+                  <article class="projects-card js-carouselItem">
+                    <img class="--img-projectsLayout" src="images/layout.jpg" alt="Layout Visualizer のサムネイル">
+
+                    <div class="projects-cardMeta">
+                      <p class="projects-cardCaption">
+                        Layout Visualizer<br>
+                        Flex / Grid の挙動を可視化して検証
+                      </p>
+
+                      <div class="projects-cardLinks">
+                        <a class="projects-cardLinkBtn" href="https://github.com/saO-Ori/layout-visualizer/blob/main/README.md" target="_blank" rel="noopener">README</a>
+                        <a class="projects-cardLinkBtn" href="https://sao-ori.github.io/layout-visualizer/" target="_blank" rel="noopener">DEMO</a>
+                      </div>
+                    </div>
+                  </article>
+
+                </div>
+              </div>
+
+              <!-- next -->
+              <button class="projects-carouselBtn projects-carouselBtn_next js-carouselNext" type="button"
+                aria-label="次へ">
+                <img src="images/right-solid.svg" alt="" aria-hidden="true">
+              </button>
+
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ▼ PC専用：横スクロール用 NEXT インジケーター（右端中央） -->
+  <button class="next-indicator --icon-next js-nextPanel" type="button" aria-label="次のセクションへ">
+    <span class="next-indicator_icon" aria-hidden="true"><img src="images/circle-right-arrow.svg" alt=""
+        class="--icon-circleArrow"></span>
+  </button>
+
+  <!-- ▼ PC専用：RETURN インジケーター（右下 footer） -->
+  <button class="return-indicator --icon-return js-returnTop" type="button" aria-label="トップへ戻る">
+    <span class="return-indicator_icon" aria-hidden="true"><img src="images/circle-up-arrow.svg" alt=""
+        class="--icon-circleArrow"></span>
+  </button>
+
+  <!-- ========== 固定フッター（ABOUT到達で出現） [Layout + State] ========== -->
+  <footer class="site-footer l-footer js-footer" aria-label="フッター">
+    <p class="site-footer_inner">© SAORI&nbsp;PORTFOLIO</p>
+  </footer>
+
+  <!-- JS（外部） -->
+  <script src="js/script.js"></script>
+</body>
+
+</html>

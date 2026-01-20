@@ -1,0 +1,782 @@
+@charset "UTF-8";
+
+/* ===============================
+    トークン（色・余白・タイポ）
+   =============================== */
+:root {
+  --bg: #ffffff;
+  --fg: #333333;
+  --muted: #666666;
+
+  --shape-opacity: 1;
+
+  /* 横スクの見かけ設定 */
+  --panel-gap-x: 0px;
+
+  /* コンテナ余白 */
+  --container-pad-x: 8vw;
+  --container-pad-y: 8vh;
+
+  /* タイポ */
+  --title-size: clamp(2rem, 5vw, 4rem);
+  --h1-size: clamp(2.2rem, 6vw, 5rem);
+
+  /* フッター */
+  --footer-h: 56px;
+  --footer-bg: rgba(255, 255, 255, 0.05);
+  --footer-border: rgba(0, 0, 0, 0.01);
+
+  /* ★ アイコン用カラー */
+  --icon-scroll-color: #333333;
+  --icon-next-bg: #c7b8ff;
+  --icon-next-arrow: #333333;
+  --icon-return-bg: #ffffff;
+  --icon-return-arrow: #333333;
+}
+
+/* ===============================
+    ベース
+   =============================== */
+html, body {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--fg);
+  background: var(--bg);
+  font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+  line-height: 1.8;
+}
+
+h1, h2, h3 {
+  line-height: 1.4;
+  font-weight: 900;
+}
+
+p {
+  font-size: 16px;
+}
+
+/* ===============================
+    背景SVG（固定）
+   =============================== */
+.background-shapes {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.--svg-shape {
+  position: absolute;
+  opacity: var(--shape-opacity);
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .08));
+  will-change: transform;
+}
+
+.--svg-shape_lg {
+  width: clamp(120px, 32vw, 420px);
+}
+
+.--svg-shape_md {
+  width: clamp(52px, 20vmin, 260px);
+}
+
+.--svg-shape_sm {
+  width: clamp(36px, 12vmin, 160px);
+}
+
+.--svg-shape_lg {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* ===============================
+    FV：スクロールダウンインジケーター
+   =============================== */
+.fv-hero {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: var(--container-pad-y) 4vw;
+}
+
+.scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(3.5rem, 10vh, 5.5rem);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--icon-scroll-color);
+
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.scroll-indicator_label {
+  font-weight: 600;
+}
+
+.scroll-indicator_icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+
+  /* ▼ SVGを背景として表示 */
+  background-image: url("../images/circle-down-arrow.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  display: block;
+  position: relative;
+}
+
+/* ホバー時に、アイコンがふわっと下に沈んで戻る */
+.scroll-indicator:hover .scroll-indicator_icon {
+  animation: scrollIndicatorBounce 0.8s ease-out;
+}
+
+/* 穏やかなバウンス（強ければ距離をあとで調整） */
+@keyframes scrollIndicatorBounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
+
+  /* ← ここが「下へ」の量 */
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.fv-hero-title {
+  margin: 0 0 1.5rem;
+  font-size: var(--h1-size);
+  line-height: 1.1;
+  letter-spacing: .02em;
+}
+
+.fv-hero-sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+}
+
+/* ===============================
+  NEXT / RETURN 共通：中央固定（見た目は変えない）
+   =============================== */
+.next-indicator_icon,
+.return-indicator_icon {
+  display: grid;
+  place-items: center;
+}
+
+.next-indicator_icon img,
+.return-indicator_icon img {
+  display: block;
+  /* inline由来のズレを根絶 */
+  width: 100%;
+  height: 100%;
+}
+
+/* ===============================
+  NEXT（PC専用）
+   =============================== */
+.next-indicator {
+  position: fixed;
+  right: clamp(1.5rem, 3vw, 2.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+
+  cursor: pointer;
+  z-index: 8;
+
+  opacity: 0.55;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.next-indicator_icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* hover（PCのみ） */
+@media (hover: hover) and (pointer: fine) {
+  .next-indicator:hover {
+    opacity: 0.9;
+    transform: translateY(-50%) translateX(1px);
+  }
+}
+
+.next-indicator:focus-visible {
+  outline: 2px solid rgba(118, 56, 250, 0.72);
+  outline-offset: 4px;
+}
+
+@media (max-width: 1024px) {
+  .next-indicator {
+    display: none;
+  }
+}
+
+.next-indicator.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(6px);
+}
+
+/* ===============================
+  RETURN（PC専用）
+   =============================== */
+.return-indicator {
+  position: fixed;
+  right: clamp(1.5rem, 3vw, 2.5rem);
+  bottom: calc(var(--footer-h) + 1.5rem);
+
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+
+  cursor: pointer;
+  z-index: 20;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.return-indicator_icon {
+  width: 40px;
+  height: 40px;
+}
+
+.return-indicator_icon img {
+  opacity: 0.45;
+}
+
+.return-indicator.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+/* hover（PCのみ） */
+@media (hover: hover) and (pointer: fine) {
+  .return-indicator:hover {
+    transform: translateY(-1px);
+  }
+
+  .return-indicator:hover .return-indicator_icon img {
+    opacity: 0.7;
+  }
+}
+
+/* フォーカス可視 */
+.return-indicator:focus-visible {
+  outline: 2px solid rgba(118, 56, 250, 0.72);
+  outline-offset: 4px;
+}
+
+/* タブレット以下では非表示 */
+@media (max-width: 1024px) {
+  .return-indicator {
+    display: none;
+  }
+}
+
+/* ===============================
+    ショーケース（横スク本体）
+   =============================== */
+.l-hscroll {
+  position: relative;
+  z-index: 1;
+}
+
+.showcase-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+}
+
+.showcase-content {
+  display: flex;
+  height: 100vh;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.showcase-panel {
+  /* 1パネル = 画面幅 */
+  flex: 0 0 calc(100vw - var(--panel-gap-x));
+  height: 100vh;
+  padding: var(--container-pad-y) var(--container-pad-x);
+  display: grid;
+  /* 左右2カラム：左=タイトル群、右=テキスト（右揃え） */
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 1.2rem;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .02), rgba(0, 0, 0, 0));
+  border-right: 1px solid rgba(0, 0, 0, .05);
+}
+
+.showcase-left {
+  display: grid;
+  align-content: center;
+  row-gap: 6px;
+}
+
+.showcase-title {
+  margin: 0;
+  font-size: var(--title-size);
+  letter-spacing: .02em;
+}
+
+.showcase-text {
+  margin: 0;
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+.showcase-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.showcase-rightText {
+  margin: 0;
+  max-width: 64ch;
+  margin: 1rem 0;
+  color: var(--fg);
+}
+
+.showcase-role {
+  margin: 0 0 1rem;
+  font-size: 1.36rem;
+  font-weight: bold;
+}
+
+/* ===============================
+  SKILLS
+=============================== */
+.skills-title {
+  line-height: 1.2;
+  font-size: 1.24rem;
+  font-weight: bold;
+}
+
+/* 動きを苦手な環境では代替（ふわっとを無効化） */
+@media (prefers-reduced-motion: reduce) {
+  .showcase-content {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ===============================
+  PROJECTS
+   =============================== */
+#projects .showcase-right {
+  max-width: none;
+  width: 100%;
+}
+
+#projects .showcase-rightText {
+  max-width: none;
+}
+
+/* 役割：横スライドの外枠 */
+.l-carousel {
+  position: relative;
+}
+
+/* 全体 */
+.projects-carousel {
+  margin-top: 1.2rem;
+  max-width: 700px;
+}
+
+.projects-carousel.is-loopFixing .projects-card,
+.projects-carousel.is-loopFixing .projects-card * {
+  transition: none !important;
+}
+
+/* 表示窓 */
+.projects-carouselViewport {
+  overflow: hidden;
+  border-radius: 14px;
+  outline: none;
+}
+
+/* キーボード操作時のフォーカス */
+.projects-carouselViewport:focus-visible {
+  outline: 2px solid rgba(118, 56, 250, 0.65);
+  outline-offset: 4px;
+}
+
+/* 横並びトラック */
+.projects-carouselTrack {
+  display: flex;
+  gap: 14px;
+  will-change: transform;
+}
+
+/* カード */
+.projects-card {
+  flex: 0 0 min(360px, 78vw);
+  overflow: hidden;
+  opacity: 0.45;
+  filter: brightness(0.7);
+  transform: scale(0.86);
+  transition: transform 260ms ease, opacity 260ms ease, filter 260ms ease;
+}
+
+.projects-card.is-active {
+  opacity: 1;
+  filter: brightness(1);
+  transform: scale(1);
+}
+
+/* 画像リンク */
+.projects-cardLink {
+  display: block;
+  text-decoration: none;
+}
+
+/* =========================================================
+  PROJECTS：images（表示用ルール）
+========================================================= */
+.--img-projectsTimer,
+.--img-projectsColor,
+.--img-projectsLayout {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 50% 50%;
+  display: block;
+}
+
+/* Layout Visualizer：タイトルを残すため上寄せ */
+.--img-projectsLayout {
+  object-position: 50% 22%;
+}
+
+/* active時だけ出すメタ情報 */
+.projects-cardMeta {
+  padding: 0.9rem 1rem 1rem;
+  display: grid;
+  gap: 0.7rem;
+
+  /* 非activeは隠す */
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.projects-card.is-active .projects-cardMeta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.projects-cardCaption {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* README / DEMO */
+.projects-cardLinks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.projects-cardLinkBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.6rem 0;
+  border-radius: 999px;
+  border: 1px solid rgba(64, 55, 52, 0.18);
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1;
+  opacity: 0.78;
+  transition: opacity 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .projects-cardLinkBtn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(64, 55, 52, 0.32);
+    transform: translateY(-1px);
+  }
+}
+
+.projects-cardLinkBtn:focus-visible {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(64, 55, 52, 0.32);
+  outline: 2px solid rgba(118, 56, 250, 0.65);
+  outline-offset: 3px;
+}
+
+.projects-cardLinkBtn:active {
+  transform: translateY(0);
+  opacity: 0.95;
+}
+
+/* ボタン */
+.projects-carouselBtn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  user-select: none;
+  opacity: 0.72;
+  transition: opacity 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+/* hoverがある環境のみ（スマホで暴発しない） */
+@media (hover: hover) and (pointer: fine) {
+  .projects-carouselBtn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(64, 55, 52, 0.32);
+    transform: translateY(-50%) scale(1.03);
+  }
+}
+
+/* キーボード操作でも同等に見えるように */
+.projects-carouselBtn:focus-visible {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(64, 55, 52, 0.32);
+  outline: 2px solid rgba(118, 56, 250, 0.65);
+  outline-offset: 3px;
+}
+
+/* 押した時に少し沈む */
+.projects-carouselBtn:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+/* 無効時はhoverしても変化させない */
+.projects-carouselBtn.is-disabled {
+  opacity: 0.35;
+  transform: translateY(-50%);
+}
+
+.projects-carouselBtn_prev {
+  left: -10px;
+}
+
+.projects-carouselBtn_next {
+  right: -10px;
+}
+
+.projects-carouselBtn.is-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ================================
+  PROJECTS：SP最適化
+================================ */
+@media (max-width: 768px) {
+  .projects-carouselBtn_prev {
+    left: 8px;
+  }
+
+  .projects-carouselBtn_next {
+    right: 8px;
+  }
+
+  /* 見える窓を1枚分にする */
+  .projects-carouselViewport {
+    overflow: hidden;
+    padding-inline: 0; /* 余白で見切れが出るなら一旦ゼロ */
+  }
+
+  /* カードを“窓と同じ幅”に寄せる */
+  .projects-card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  /* active演出はSPでは弱める（縮小版に見えるのを防ぐ） */
+  .projects-card {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* キャプションは常時表示寄りが読みやすい */
+  .projects-cardMeta {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===============================
+  固定フッター（ABOUT到達で出現）
+   =============================== */
+.l-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--footer-h);
+  background: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+  backdrop-filter: saturate(150%) blur(6px);
+  -webkit-backdrop-filter: saturate(150%) blur(6px);
+  transform: translateY(100%);
+  transition: transform 260ms ease-out;
+  z-index: 10;
+}
+
+.is-footer-visible .l-footer {
+  transform: translateY(0);
+}
+
+/* =========================================
+  フッター干渉回避（フッター表示中だけ下に逃げを作る）
+  - 見た目は維持して、操作しやすさだけ改善
+========================================= */
+.is-footer-visible .showcase-panel {
+  padding-bottom: calc(var(--container-pad-y) + var(--footer-h));
+}
+
+.site-footer_inner {
+  margin: 0;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: .95rem;
+  color: var(--muted);
+}
+
+/* ===============================
+    ★ PCのみ：FV→ABOUTの縦スナップ（任意）
+    html.snap-y が付与されたときだけ有効
+   =============================== */
+html.snap-y {
+  scroll-snap-type: y proximity;
+  scroll-padding-top: 25vh;
+}
+
+/* proximity or mandatory */
+.fv-hero, .showcase {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* ===============================
+    ★ タブレット以下：左右→上下（縦積み）へ切替
+   =============================== */
+@media (max-width:1024px) {
+  html.snap-y {
+    scroll-snap-type: none;
+  }
+
+  .fv-hero, .showcase {
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
+  }
+
+  .showcase-viewport {
+    position: static;
+    top: auto;
+    height: auto;
+    overflow: visible;
+    display: block;
+  }
+
+  .showcase-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    height: auto;
+    transform: none !important;
+  }
+
+  .showcase-panel {
+    flex: none;
+    height: auto;
+    min-height: 60vh;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .showcase-right {
+    text-align: left;
+  }
+
+  .--svg-shape {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* =========================================
+    ▼ 追加：SP横はみ出し（scrollWidth増大）対策
+    - 見た目を変えずに “はみ出しだけ” を止める
+  ========================================= */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  /* flex/gridの子要素が内容幅で親を押し広げるのを防ぐ */
+  .showcase-right,
+  .projects-carousel,
+  .projects-carouselViewport {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* カルーセル由来の横幅がドキュメント幅に影響しないよう遮断 */
+  .projects-carousel {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
